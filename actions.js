@@ -1,32 +1,42 @@
 // this function gets pictures from instagram and displays them on the webpage
 
-getInstaPictures();
+   
 
-async function getInstaPictures() {
-    // adding ?__a=1 on the end of any instagram URL is a public API
-    const response = await fetch("https://www.instagram.com/catmcgeecode/?__a=1");
-    const jsonData = await response.json(); // converts into json so we can easily find the images
-    // console.log(jsonData)
-    const pictures = jsonData.graphql.user.edge_owner_to_timeline_media.edges; 
+var $ = jQuery
+
+//ajax query to instagram data's
+$.ajax({
+
+      type: "GET",
+      async: true,
+      //instagram API to fetch  the profile details, replace the pro__googler with your insta username. 
+      url: "https://www.instagram.com/pro__googler/?__a=1",
+      dataType: 'json',
+      success: function(data){
+
+        var pictures = data.graphql.user.edge_owner_to_timeline_media.edges
+
+     //creating bootstrap carousel and set profile pic as active element
+        $('#carrusel').append($('<div class="carousel-item active "><img class="d-block w-100" src='  +data.graphql.user.profile_pic_url_hd + '></div>'));
+
+     for ( i=0 ; i< pictures.length; i++){
+       
+     //creating bootstrap carousel and set instagram posts as carousel items
+
+            $('#carrusel').append($('<div class="carousel-item "><img class="d-block w-100" src='  + pictures[i].node.display_url + '></div>'));
+            $('.carousel').carousel();
+ 
+        
     
-    // iterate through each picture to add to HTML
-    for(i = 0; i < pictures.length ; i++) {
-        let img = document.createElement('img');
-        img.src = pictures[i].node.display_url; // this is where the image url is stored in the json
-        document.body.appendChild(img);
+
     }
-}
 
-// this function moves the flashlight 
+      //use should get the complete profile data's
+      console.log(data.graphql.user)
 
-document.addEventListener('mousemove', update)
 
-function update(e) {
-    let x = e.clientX; // X position of mouse
-    let y = e.clientY; // Y position of mouse
 
-    // sets --cursor variables that we use in the CSS to display flashlight
-    document.documentElement.style.setProperty('--cursorX', x + 'px'); 
-    document.documentElement.style.setProperty('--cursorY', y + 'px');
-}
+      }
 
+
+})
