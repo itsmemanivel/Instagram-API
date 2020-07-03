@@ -1,5 +1,7 @@
 # Instagram Feed using API
 
+[Live Demo](https://veluvj.github.io/Instagram-API/)
+
 Get all images from a user's instagram page 
 
 ## How it works
